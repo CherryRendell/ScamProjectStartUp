@@ -15,19 +15,10 @@ def start(message):
 def get_text_messages(message):
 
     if message.text == 'Да!':
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #создание новых кнопок
-        btn1 = types.KeyboardButton('Драг металлы')
-        btn2 = types.KeyboardButton('Акции')
-        btn3 = types.KeyboardButton('Крипта')
-        markup.add(btn1, btn2, btn3)
-        bot.send_message(message.from_user.id, '❓ Сколько вы готовы вложить?', reply_markup=markup)
-        money = message.text
-        while money > 0:
-            bot.send_message(message.from_user.id, '❓ Во что вкладываемся?', reply_markup=markup) #ответ бота
-
+        keyboard = telebot.types.ReplyKeyboardRemove()
+        bot.send_message(message.from_user.id, '❓ Напишите, cколько вы готовы вложить?', reply_markup=keyboard)
 
     elif message.text == 'Драг металлы':
-        print(money)
         bot.send_message(message.from_user.id, 'Покупай золото, ежжи, золотой зуб даю!', parse_mode='Markdown')
 
     elif message.text == 'Акции':
@@ -35,6 +26,15 @@ def get_text_messages(message):
 
     elif message.text == 'Крипта':
         bot.send_message(message.from_user.id, 'Биток и эфир бери ежжи', parse_mode='Markdown')
+    
+    elif message.text.isnumeric():
+        money = float(message.text)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = types.KeyboardButton('Драг металлы')
+        btn2 = types.KeyboardButton('Акции')
+        btn3 = types.KeyboardButton('Крипта')
+        markup.add(btn1, btn2, btn3)
+        bot.send_message(message.from_user.id, '❓ Во что вкладываемся?', reply_markup=markup)
 
 
-bot.polling(none_stop=True, interval=0) #обязательная для работы бота часть
+bot.polling(none_stop=True, interval=0)
